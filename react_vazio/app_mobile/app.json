@@ -1,22 +1,29 @@
 {
   "expo": {
-    "name": "app_mobile",
-    "slug": "app_mobile",
+    "name": "História da Internet",
+    "slug": "historia-da-internet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#eaf4ff"
+    },
+
     "ios": {
       "supportsTablet": true
     },
+
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#eaf4ff",
+        "foregroundImage": "./assets/android-icon-foreground.png"
       }
     },
+
     "web": {
       "favicon": "./assets/favicon.png"
     }
