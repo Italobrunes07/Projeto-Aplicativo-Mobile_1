@@ -1,12 +1,12 @@
 # PAM
 
-#NOMES
+# NOMES
 
 Vinicius de Sousa Barbosa 2DS
 
 Italo Lourenço Brunes 2DS
 
-#ANOTAÇÕES
+# ANOTAÇÕES
 
 npx create-expo-app nome_do_app --template blank
 
