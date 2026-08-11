@@ -5,58 +5,86 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
 } from "react-native";
-
-import logo from "../assets/icon2.png";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
   function entrar() {
-    navigation.navigate("Home");
+    navigation.navigate("Dashboard");
   }
 
   return (
     <View style={styles.container}>
 
-      <Image source={logo} style={styles.logo} />
+      <View style={styles.logo}>
+        <Text style={styles.logoTexto}>APP</Text>
+      </View>
 
-      <Text style={styles.titulo}>Bem-vindo!</Text>
+      <Text style={styles.titulo}>
+        Bem-vindo!
+      </Text>
 
       <Text style={styles.subtitulo}>
         Faça login para continuar
       </Text>
 
+      <Text style={styles.label}>
+        E-mail
+      </Text>
+
       <TextInput
+        style={styles.input}
         placeholder="Digite seu e-mail"
         placeholderTextColor="#999"
         keyboardType="email-address"
+        autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
-        style={styles.input}
       />
 
+      <Text style={styles.label}>
+        Senha
+      </Text>
+
       <TextInput
+        style={styles.input}
         placeholder="Digite sua senha"
         placeholderTextColor="#999"
         secureTextEntry
         value={senha}
         onChangeText={setSenha}
-        style={styles.input}
       />
 
       <TouchableOpacity
         style={styles.botao}
         onPress={entrar}
       >
-        <Text style={styles.textoBotao}>ENTRAR</Text>
+        <Text style={styles.textoBotao}>
+          ENTRAR
+        </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Base")}
+      >
         <Text style={styles.esqueceu}>
           Esqueceu sua senha?
+        </Text>
+      </TouchableOpacity>
+
+      <View style={styles.linha} />
+
+      <Text style={styles.pergunta}>
+        Ainda não possui uma conta?
+      </Text>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Cadastro")}
+      >
+        <Text style={styles.cadastro}>
+          Criar uma conta
         </Text>
       </TouchableOpacity>
 
@@ -73,26 +101,42 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 170,
-    height: 170,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#0066FF",
+    justifyContent: "center",
+    alignItems: "center",
     alignSelf: "center",
-    resizeMode: "contain",
-    marginBottom: 30,
+    marginBottom: 25,
+  },
+
+  logoTexto: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontWeight: "bold",
   },
 
   titulo: {
     fontSize: 32,
     fontWeight: "bold",
     textAlign: "center",
-    color: "#111",
+    color: "#111111",
   },
 
   subtitulo: {
     textAlign: "center",
-    color: "#777",
+    color: "#777777",
     fontSize: 16,
     marginTop: 8,
-    marginBottom: 40,
+    marginBottom: 35,
+  },
+
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333333",
+    marginBottom: 7,
   },
 
   input: {
@@ -112,11 +156,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 5,
   },
 
   textoBotao: {
-    color: "#FFF",
+    color: "#FFFFFF",
     fontWeight: "bold",
     fontSize: 18,
   },
@@ -124,7 +168,29 @@ const styles = StyleSheet.create({
   esqueceu: {
     textAlign: "center",
     color: "#0066FF",
-    marginTop: 25,
+    marginTop: 22,
     fontSize: 15,
+    fontWeight: "600",
+  },
+
+  linha: {
+    height: 1,
+    backgroundColor: "#EEEEEE",
+    marginVertical: 25,
+  },
+
+  pergunta: {
+    textAlign: "center",
+    color: "#777777",
+    fontSize: 14,
+  },
+
+  cadastro: {
+    textAlign: "center",
+    color: "#0066FF",
+    marginTop: 10,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
+
