@@ -8,58 +8,22 @@ import {
 } from 'react-native';
 
 import { colors } from '../styles/colors';
-
-const commands = [
-    {
-        titulo: 'Criar um projeto Expo',
-        comando: 'npx create-expo-app meu-app',
-        descricao: 'Cria um novo projeto utilizando Expo.'
-    },
-    {
-        titulo: 'Entrar na pasta do projeto',
-        comando: 'cd meu-app',
-        descricao: 'Entra na pasta criada para o projeto.'
-    },
-    {
-        titulo: 'Instalar dependências',
-        comando: 'npm install',
-        descricao: 'Instala as dependências necessárias do projeto.'
-    },
-    {
-        titulo: 'Iniciar o Expo',
-        comando: 'npx expo start',
-        descricao: 'Inicia o servidor de desenvolvimento do Expo.'
-    },
-    {
-        titulo: 'Executar na Web',
-        comando: 'npm run web',
-        descricao: 'Executa o projeto no navegador.'
-    },
-    {
-        titulo: 'Executar no Android',
-        comando: 'npm run android',
-        descricao: 'Inicia o projeto utilizando o Android.'
-    },
-    {
-        titulo: 'Verificar o código',
-        comando: 'npx expo lint',
-        descricao: 'Verifica possíveis problemas no código.'
-    }
-];
+import { commands } from '../data/commands';
 
 export default function CommandsScreen() {
 
-    function copiarComando(comando) {
+    function selecionarComando(comando) {
         Alert.alert(
-            'Comando',
-            `Comando selecionado:\n\n${comando}`
+            'Comando selecionado',
+            comando
         );
     }
 
     return (
-
-        <ScrollView style={styles.container}>
-
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.scrollContent}
+        >
             <View style={styles.content}>
 
                 <Text style={styles.titulo}>
@@ -67,52 +31,57 @@ export default function CommandsScreen() {
                 </Text>
 
                 <Text style={styles.descricao}>
-                    Principais comandos utilizados durante
-                    o desenvolvimento dos projetos.
+                    Principais comandos utilizados durante a
+                    criação, execução e manutenção dos projetos.
                 </Text>
 
-                {commands.map((item, index) => (
-
+                {commands.map((item) => (
                     <View
-                        key={index}
+                        key={item.id}
                         style={styles.card}
                     >
 
-                        <Text style={styles.cardTitulo}>
-                            {item.titulo}
-                        </Text>
+                        <View style={styles.topo}>
+
+                            <View style={styles.numero}>
+                                <Text style={styles.numeroTexto}>
+                                    {String(item.id).padStart(2, '0')}
+                                </Text>
+                            </View>
+
+                            <Text style={styles.cardTitulo}>
+                                {item.titulo}
+                            </Text>
+
+                        </View>
 
                         <Text style={styles.cardDescricao}>
                             {item.descricao}
                         </Text>
 
                         <View style={styles.codigoContainer}>
-
                             <Text style={styles.codigo}>
                                 {item.comando}
                             </Text>
-
                         </View>
 
                         <TouchableOpacity
                             style={styles.botao}
-                            onPress={() => copiarComando(item.comando)}
+                            onPress={() =>
+                                selecionarComando(item.comando)
+                            }
+                            activeOpacity={0.7}
                         >
-
                             <Text style={styles.botaoTexto}>
-                                Copiar comando
+                                Ver comando
                             </Text>
-
                         </TouchableOpacity>
 
                     </View>
-
                 ))}
 
             </View>
-
         </ScrollView>
-
     );
 }
 
@@ -121,6 +90,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.background,
+    },
+
+    scrollContent: {
+        paddingBottom: 30,
     },
 
     content: {
@@ -140,8 +113,9 @@ const styles = StyleSheet.create({
     descricao: {
         color: colors.textSecondary,
         fontSize: 15,
-        lineHeight: 22,
+        lineHeight: 23,
         marginBottom: 30,
+        maxWidth: 700,
     },
 
     card: {
@@ -153,16 +127,39 @@ const styles = StyleSheet.create({
         marginBottom: 18,
     },
 
+    topo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+
+    numero: {
+        width: 40,
+        height: 40,
+        borderRadius: 9,
+        backgroundColor: colors.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
+    },
+
+    numeroTexto: {
+        color: colors.black,
+        fontWeight: '900',
+        fontSize: 12,
+    },
+
     cardTitulo: {
         color: colors.text,
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 8,
+        flex: 1,
     },
 
     cardDescricao: {
         color: colors.textSecondary,
         fontSize: 14,
+        lineHeight: 21,
         marginBottom: 15,
     },
 
@@ -180,15 +177,16 @@ const styles = StyleSheet.create({
     },
 
     botao: {
-        backgroundColor: colors.primary,
-        paddingVertical: 11,
-        paddingHorizontal: 16,
-        borderRadius: 8,
         alignSelf: 'flex-start',
+        borderWidth: 1,
+        borderColor: colors.primary,
+        borderRadius: 8,
+        paddingVertical: 10,
+        paddingHorizontal: 16,
     },
 
     botaoTexto: {
-        color: colors.black,
+        color: colors.primary,
         fontWeight: 'bold',
         fontSize: 13,
     },

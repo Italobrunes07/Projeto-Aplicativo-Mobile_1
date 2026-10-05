@@ -19,10 +19,14 @@ export default function App() {
                     headerStyle: {
                         backgroundColor: colors.backgroundSecondary,
                     },
+
                     headerTintColor: colors.text,
+
                     headerTitleStyle: {
                         fontWeight: 'bold',
                     },
+
+                    headerShadowVisible: false,
                 }}
             >
 
@@ -30,28 +34,40 @@ export default function App() {
                     name="Home"
                     component={HomeScreen}
                     options={{
-                        title: 'PAM',
+                        title: 'DevHub',
                     }}
                 />
 
                 <Stack.Screen
                     name="Projetos"
                     component={ProjectsScreen}
+                    options={{
+                        title: 'Meus Projetos',
+                    }}
                 />
 
                 <Stack.Screen
                     name="Tecnologias"
                     component={TechnologiesScreen}
+                    options={{
+                        title: 'Tecnologias',
+                    }}
                 />
 
                 <Stack.Screen
                     name="Comandos"
                     component={CommandsScreen}
+                    options={{
+                        title: 'Comandos',
+                    }}
                 />
 
                 <Stack.Screen
                     name="Sobre"
                     component={AboutScreen}
+                    options={{
+                        title: 'Sobre o DevHub',
+                    }}
                 />
 
             </Stack.Navigator>
