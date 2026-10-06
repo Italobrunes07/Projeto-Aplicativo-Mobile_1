@@ -1,160 +1,170 @@
+import React, { useState } from 'react';
+
 import {
     View,
     Text,
-    ScrollView,
-    StyleSheet
+    TextInput,
+    TouchableOpacity,
+    StyleSheet,
+    Alert,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView
 } from 'react-native';
 
+import {
+    signInWithEmailAndPassword
+} from 'firebase/auth';
+
+import { auth } from '../utils/firebase';
 import { colors } from '../styles/colors';
 
-export default function AboutScreen() {
+export default function LoginScreen({ navigation }) {
+
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [carregando, setCarregando] = useState(false);
+
+    async function entrar() {
+
+        if (!email.trim() || !senha) {
+            Alert.alert(
+                'Atenção',
+                'Digite seu e-mail e sua senha.'
+            );
+
+            return;
+        }
+
+        try {
+
+            setCarregando(true);
+
+            await signInWithEmailAndPassword(
+                auth,
+                email.trim(),
+                senha
+            );
+
+            navigation.replace('Home');
+
+        } catch (error) {
+
+            let mensagem = 'Não foi possível entrar.';
+
+            if (
+                error.code === 'auth/invalid-credential' ||
+                error.code === 'auth/wrong-password' ||
+                error.code === 'auth/user-not-found'
+            ) {
+                mensagem = 'E-mail ou senha incorretos.';
+            }
+
+            if (error.code === 'auth/invalid-email') {
+                mensagem = 'Digite um e-mail válido.';
+            }
+
+            Alert.alert(
+                'Erro no login',
+                mensagem
+            );
+
+        } finally {
+
+            setCarregando(false);
+
+        }
+    }
+
     return (
-        <ScrollView
+        <KeyboardAvoidingView
             style={styles.container}
-            contentContainerStyle={styles.scrollContent}
+            behavior={
+                Platform.OS === 'ios'
+                    ? 'padding'
+                    : undefined
+            }
         >
-            <View style={styles.content}>
 
-                <Text style={styles.logo}>
-                    PAM
-                </Text>
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                keyboardShouldPersistTaps="handled"
+            >
 
-                <Text style={styles.titulo}>
-                    Sobre o projeto
-                </Text>
+                <View style={styles.content}>
 
-                <Text style={styles.subtitulo}>
-                    Projeto Aplicativo Mobile
-                </Text>
-
-                <View style={styles.card}>
-
-                    <Text style={styles.cardTitulo}>
-                        Objetivo
+                    <Text style={styles.logo}>
+                        VENDAHUB
                     </Text>
 
-                    <Text style={styles.texto}>
-                        Este aplicativo foi desenvolvido como
-                        projeto do 4º bimestre da disciplina de
-                        Projeto Aplicativo Mobile.
+                    <Text style={styles.titulo}>
+                        Bem-vindo de volta
                     </Text>
 
-                    <Text style={styles.texto}>
-                        O objetivo é apresentar os projetos,
-                        tecnologias e conhecimentos adquiridos
-                        durante as aulas de Desenvolvimento
-                        de Sistemas.
+                    <Text style={styles.descricao}>
+                        Entre na sua conta para gerenciar
+                        suas vendas.
                     </Text>
+
+                    <Text style={styles.label}>
+                        E-mail
+                    </Text>
+
+                    <TextInput
+                        style={styles.input}
+                        placeholder="seu@email.com"
+                        placeholderTextColor={colors.textSecondary}
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                    />
+
+                    <Text style={styles.label}>
+                        Senha
+                    </Text>
+
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Sua senha"
+                        placeholderTextColor={colors.textSecondary}
+                        value={senha}
+                        onChangeText={setSenha}
+                        secureTextEntry
+                    />
+
+                    <TouchableOpacity
+                        style={styles.botao}
+                        onPress={entrar}
+                        disabled={carregando}
+                        activeOpacity={0.7}
+                    >
+                        <Text style={styles.botaoTexto}>
+                            {carregando
+                                ? 'Entrando...'
+                                : 'Entrar'}
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.linkBotao}
+                        onPress={() => navigation.navigate('Cadastro')}
+                        activeOpacity={0.7}
+                    >
+                        <Text style={styles.linkTexto}>
+                            Ainda não possui uma conta?{' '}
+                            <Text style={styles.linkDestaque}>
+                                Cadastre-se
+                            </Text>
+                        </Text>
+                    </TouchableOpacity>
 
                 </View>
 
-                <View style={styles.card}>
+            </ScrollView>
 
-                    <Text style={styles.cardTitulo}>
-                        Desenvolvimento
-                    </Text>
-
-                    <Text style={styles.texto}>
-                        O aplicativo foi desenvolvido utilizando
-                        React Native e Expo, seguindo uma
-                        organização de pastas para separar as
-                        telas, componentes, dados e estilos.
-                    </Text>
-
-                </View>
-
-                <View style={styles.card}>
-
-                    <Text style={styles.cardTitulo}>
-                        Tecnologias
-                    </Text>
-
-                    <View style={styles.item}>
-                        <Text style={styles.itemNumero}>
-                            01
-                        </Text>
-
-                        <Text style={styles.itemTexto}>
-                            React Native
-                        </Text>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.itemNumero}>
-                            02
-                        </Text>
-
-                        <Text style={styles.itemTexto}>
-                            Expo
-                        </Text>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.itemNumero}>
-                            03
-                        </Text>
-
-                        <Text style={styles.itemTexto}>
-                            JavaScript
-                        </Text>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.itemNumero}>
-                            04
-                        </Text>
-
-                        <Text style={styles.itemTexto}>
-                            React Navigation
-                        </Text>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.itemNumero}>
-                            05
-                        </Text>
-
-                        <Text style={styles.itemTexto}>
-                            SQLite
-                        </Text>
-                    </View>
-
-                </View>
-
-                <View style={styles.card}>
-
-                    <Text style={styles.cardTitulo}>
-                        Organização
-                    </Text>
-
-                    <Text style={styles.codigo}>
-                        src/
-                    </Text>
-
-                    <Text style={styles.codigo}>
-                        ├── components/
-                    </Text>
-
-                    <Text style={styles.codigo}>
-                        ├── data/
-                    </Text>
-
-                    <Text style={styles.codigo}>
-                        ├── screens/
-                    </Text>
-
-                    <Text style={styles.codigo}>
-                        ├── styles/
-                    </Text>
-
-                    <Text style={styles.codigo}>
-                        └── utils/
-                    </Text>
-
-                </View>
-
-            </View>
-        </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -166,82 +176,86 @@ const styles = StyleSheet.create({
     },
 
     scrollContent: {
-        paddingBottom: 30,
+        flexGrow: 1,
+        justifyContent: 'center',
+        padding: 30,
     },
 
     content: {
         width: '100%',
-        maxWidth: 1000,
+        maxWidth: 500,
         alignSelf: 'center',
-        padding: 30,
     },
 
     logo: {
         color: colors.primary,
-        fontSize: 22,
+        fontSize: 24,
         fontWeight: '900',
         letterSpacing: 4,
-        marginBottom: 10,
+        marginBottom: 35,
+        textAlign: 'center',
     },
 
     titulo: {
         color: colors.text,
-        fontSize: 36,
+        fontSize: 34,
         fontWeight: '900',
-        marginBottom: 8,
+        marginBottom: 10,
     },
 
-    subtitulo: {
+    descricao: {
         color: colors.textSecondary,
         fontSize: 15,
+        lineHeight: 22,
         marginBottom: 30,
     },
 
-    card: {
+    label: {
+        color: colors.text,
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
+
+    input: {
         backgroundColor: colors.card,
         borderWidth: 1,
         borderColor: colors.border,
-        borderRadius: 16,
-        padding: 20,
+        borderRadius: 10,
+        color: colors.text,
+        fontSize: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 14,
         marginBottom: 18,
     },
 
-    cardTitulo: {
-        color: colors.primary,
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 15,
-    },
-
-    texto: {
-        color: colors.textSecondary,
-        fontSize: 15,
-        lineHeight: 23,
-        marginBottom: 12,
-    },
-
-    item: {
-        flexDirection: 'row',
+    botao: {
+        backgroundColor: colors.primary,
+        borderRadius: 10,
+        paddingVertical: 15,
         alignItems: 'center',
-        marginBottom: 12,
+        marginTop: 5,
     },
 
-    itemNumero: {
-        color: colors.primary,
-        fontWeight: '900',
-        width: 35,
-    },
-
-    itemTexto: {
-        color: colors.text,
+    botaoTexto: {
+        color: colors.black,
         fontSize: 15,
+        fontWeight: '900',
     },
 
-    codigo: {
-        color: colors.primary,
-        fontFamily: 'monospace',
+    linkBotao: {
+        alignItems: 'center',
+        marginTop: 20,
+    },
+
+    linkTexto: {
+        color: colors.textSecondary,
         fontSize: 14,
-        lineHeight: 24,
+    },
+
+    linkDestaque: {
+        color: colors.primary,
+        fontWeight: 'bold',
     },
 
 });

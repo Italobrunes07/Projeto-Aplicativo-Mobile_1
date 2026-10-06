@@ -1,6 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
+
 import HomeScreen from './src/screens/HomeScreen';
 import ProjectsScreen from './src/screens/ProjectsScreen';
 import TechnologiesScreen from './src/screens/TechnologiesScreen';
@@ -12,9 +15,12 @@ import { colors } from './src/styles/colors';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
     return (
         <NavigationContainer>
+
             <Stack.Navigator
+                initialRouteName="Login"
                 screenOptions={{
                     headerStyle: {
                         backgroundColor: colors.backgroundSecondary,
@@ -31,10 +37,26 @@ export default function App() {
             >
 
                 <Stack.Screen
+                    name="Login"
+                    component={LoginScreen}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+
+                <Stack.Screen
+                    name="Cadastro"
+                    component={RegisterScreen}
+                    options={{
+                        title: 'Criar conta',
+                    }}
+                />
+
+                <Stack.Screen
                     name="Home"
                     component={HomeScreen}
                     options={{
-                        title: 'DevHub',
+                        title: 'VendaHub',
                     }}
                 />
 
@@ -66,11 +88,12 @@ export default function App() {
                     name="Sobre"
                     component={AboutScreen}
                     options={{
-                        title: 'Sobre o DevHub',
+                        title: 'Sobre o VendaHub',
                     }}
                 />
 
             </Stack.Navigator>
+
         </NavigationContainer>
     );
 }
